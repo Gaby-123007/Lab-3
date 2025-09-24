@@ -83,3 +83,102 @@ for archivo in archivos:
 Inicializa potencias = {} para almacenar la potencia de cada señal. Itera sobre cada archivo en archivosy: Se carga el archivo WAV con wavfile.read(), obteniendo: sample_rate: la frecuencia de muestreo en Hz. audio_data:los datos de la señal. (se toma solo el primer canal audio_data[:, 0]). Convierte la señal a flotante ( np.float32) para cálculos precisos.
 
 <img width="302" alt="image" src="https://github.com/user-attachments/assets/a2eb43b4-3fdc-42ed-9535-07d5298779c7" />
+
+Manejo de errores :
+
+Si el archivo no existe, muestra Error: No se encontró el archivo.
+Si el archivo no es válido, muestra Error: Archivo no es un WAV válido.
+
+- Definir la potencia del ruido ambiente:
+```  
+potencia_ruido = potencias.get("ambiente.wav", None)
+
+```
+Se extrae la potencia del archivo ambiente.wav(considerado como ruido) para usarlo en el cálculo del SNR .
+
+- Cálculo del SNR y generación de gráficos:
+  
+```
+for archivo in archivos:
+    try:
+        sample_rate, audio_data = wavfile.read(f"{ruta_carpeta}\\{archivo}")
+
+        if len(audio_data.shape) > 1:
+            audio_data = audio_data[:, 0]
+
+        audio_data = audio_data.astype(np.float32)
+
+        potencia_senal = potencias.get(archivo, None)
+
+        if potencia_ruido is not None and potencia_ruido > 0:
+            if archivo == "ambiente.wav":
+                snr_db = 0  
+            else:
+                snr_db = 10 * np.log10(potencia_senal / potencia_ruido) if potencia_senal > potencia_ruido else float('-inf')
+        else:
+            snr_db = float('-inf')
+
+        print(f"SNR de {archivo}: {snr_db:.2f} dB")
+
+```
+Explicación del cálculo de SNR (Relación señal-ruido)
+El SNR se calcula con la fórmula:
+
+<img width="212" alt="image" src="https://github.com/user-attachments/assets/c2078987-e550-40b7-a2d7-2dc8785f6bce" />
+
+
+Si archivo == "ambiente.wav", el SNR es 0 dB porque es la referencia de ruido.
+Si la potencia de la señal es menor que la del ruido, se devuelve -inf(SNR indefinido).
+
+- Normalización de la señal y graficado:
+  
+```
+audio_data_norm = audio_data / np.max(np.abs(audio_data))  # Normalizar
+        tiempo = np.arange(len(audio_data_norm)) / sample_rate  # Eje de tiempo
+
+        plt.figure(figsize=(12, 5))
+
+        # === Gráfica en el dominio del tiempo ===
+        plt.subplot(1, 2, 1)
+        plt.plot(tiempo, audio_data_norm, color=colores_tiempo[archivo], alpha=0.7)
+        plt.xlabel("Tiempo (s)")
+        plt.ylabel("Amplitud")
+        plt.title(f"Señal Temporal - {archivo}")
+        plt.grid(True, linestyle='--', alpha=0.6)
+        plt.xlim(0, tiempo[-1])
+```
+Normalización : Se divide la señal por su valor máximo para escalar entre -1y 1.
+Eje de tiempo : Se genera con np.arange(len(audio_data_norm)) / sample_rate.
+Se grafica la señal en el dominio del tiempo .
+
+- Transformada de Fourier y gráfica en el dominio de la frecuencia:
+- 
+```
+N = len(audio_data_norm)
+        fft_data = np.fft.fft(audio_data_norm)
+        freqs = np.fft.fftfreq(N, d=1/sample_rate)
+
+        fft_magnitude = np.abs(fft_data[:N//2])
+        freqs = freqs[:N//2]
+
+        plt.subplot(1, 2, 2)
+        plt.plot(freqs, fft_magnitude, label=f"SNR: {snr_db:.2f} dB", 
+                 color=colores_frecuencia[archivo], alpha=0.7)
+        plt.xlabel("Frecuencia (Hz)")
+        plt.ylabel("Magnitud")
+        plt.title(f"Espectro de Frecuencias - {archivo}")
+        plt.legend()
+        plt.grid(True, linestyle='--', alpha=0.6)
+        plt.xscale("log")
+        plt.xlim(20, 10000)
+```
+Se aplica la Transformada Rápida de Fourier (FFT) con np.fft.fft().
+Se extrae la mitad del espectro ( [:N//2]porque la FFT es simétrica).
+Se grafica el espectro en el dominio de la frecuencia en escala logarítmica.
+
+
+
+
+
+
+
