@@ -29,7 +29,7 @@ El Análisis de Componentes Independientes (ICA) y el Beamforming son técnicas 
 - En resumen, ICA separa señales superpuestas, mientras que Beamforming mejora la señal enfocándose en una dirección específica.
 
 # Explicacion código Python:
--Importación de librerías:
+- Importación de librerías:
 
 ```
 import os  
@@ -53,4 +53,33 @@ scipy.signal.lfilter Para aplicar un filtro pasa banda y eliminar el ruido fuera
 sklearn.decomposition.FastICA Para aplicar Análisis de Componentes Independientes (ICA) y separar la voz del ruido.
 
 - Definición de la ruta de la carpeta y archivos:
+```
+ruta_carpeta = r"C:\Users\Nicole\OneDrive\Pictures\Screenshots\SEXTO SEMESTRE\LABS SEÑALES\Lab3.3"
+archivos = ["Martin.wav", "Gabi.wav", "Majo.wav", "ambiente.wav"]
+```
+Se define la ruta donde están los archivos de audio y se almacenan en ruta_carpeta. Luego, archivos es una lista con los nombres de los archivos de audio a procesar.
 
+- Cálculo de la potencia de las señales.
+ ```
+potencias = {}
+
+for archivo in archivos:
+    try:
+        sample_rate, audio_data = wavfile.read(f"{ruta_carpeta}\\{archivo}")
+
+        if len(audio_data.shape) > 1:
+            audio_data = audio_data[:, 0]  # Convertir a mono si es estéreo
+
+        audio_data = audio_data.astype(np.float32)  # Convertir a flotante
+        potencias[archivo] = np.mean(audio_data ** 2)  # Cálculo de potencia
+
+    except FileNotFoundError:
+        print(f"Error: No se encontró el archivo {archivo}.")
+    except ValueError:
+        print(f"Error: Archivo {archivo} no es un WAV válido.")
+    except Exception as e:
+        print(f"Error al procesar {archivo}: {e}")
+``` 
+Inicializa potencias = {} para almacenar la potencia de cada señal. Itera sobre cada archivo en archivosy: Se carga el archivo WAV con wavfile.read(), obteniendo: sample_rate: la frecuencia de muestreo en Hz. audio_data:los datos de la señal. (se toma solo el primer canal audio_data[:, 0]). Convierte la señal a flotante ( np.float32) para cálculos precisos.
+
+<img width="302" alt="image" src="https://github.com/user-attachments/assets/a2eb43b4-3fdc-42ed-9535-07d5298779c7" />
