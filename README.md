@@ -2,7 +2,7 @@
 # INTRODUCCIÓN
 En el presente laboratorio se explora el "problema de la fiesta de cóctel", que consiste en simular una conversación en un entorno ruidoso con múltiples fuentes de sonido. Utilizando tres micrófonos (uno por integrante del grupo) con el fin de captar por medio de celulares a diversas distancias el sonido y percibido calcular el SNR de cada una de las señales, adicionalmente se realiza un análisis espectral con la tranformada rápida de fourier para cada señal, separando el ruido de la señal por medio de filtrado.
 # PASO A PASO:
-Configuración del sistema:
+1. Configuración del sistema:
 Conectar los tres micrófonos al sistema de adquisición de datos.
 Ubicarlos en la sala de manera que cada uno capture una combinación diferente de sonidos.
 Colocar a tres personas en posiciones fijas y orientadas en distintas direcciones para simular un ambiente con varias fuentes de sonido (como en una fiesta).
