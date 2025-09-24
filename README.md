@@ -198,15 +198,19 @@ Muy similar a "gabi.wav", lo que indica una señal limpia y bien separada del ru
 - *SNR Majo = 24.36 dB*
   
 Este es un SNR más bajo que las señales anteriores, lo que indica que tiene *más ruido de fondo*
-![image](https://github.com/user-attachments/assets/83f88512-a863-4f19-bb4d-8674d1682d1f)
+<img width="1280" height="581" alt="image" src="https://github.com/user-attachments/assets/2ae6db85-3c3b-4e1d-a2da-b629ccfd66d7" />
 
 **gabi.wav** es una señal de voz con una buena relación señal-ruido y clara diferenciación en el espectro de frecuencias. Es adecuada para análisis de voz o procesamiento de señales de audio.
 
 Presenta picos pronunciados en el rango *100 Hz - 1000 Hz*, característico de la voz humana.
 La mayor parte de la energía se concentra en el rango de *bajas frecuencias (<1000 Hz)*, lo que es normal en señales de voz.
 
-![image](https://github.com/user-attachments/assets/0b98f840-40dd-438f-9af5-9c207450bcdd)
+<img width="1280" height="520" alt="image" src="https://github.com/user-attachments/assets/643537dd-0ed9-495a-a19b-1bd69eee9e1c" />
 
+martin.wav es otra señal de voz con buena calidad y alta relación señal-ruido. Su espectro de frecuencia muestra una mayor riqueza de armónicos, lo que podría interpretarse como una voz con más variaciones tonales.
+
+<img width="1280" height="527" alt="image" src="https://github.com/user-attachments/assets/4b756807-325b-48c8-bdbc-3cc314a497cf" />
+Majo.wav también es una señal de voz, pero con más ruido ambiental que las anteriores. Si se desea mejorar la calidad, se podría aplicar un filtro de reducción de ruido.
 
 
 
