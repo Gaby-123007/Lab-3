@@ -197,7 +197,7 @@ Este es un *SNR alto*, lo que indica que la señal está limpia y tiene poco rui
 Muy similar a "gabi.wav", lo que indica una señal limpia y bien separada del ruido de fondo.
 - *SNR Majo = 24.36 dB*
   
-- Este es un SNR más bajo que las señales anteriores, lo que indica que tiene *más ruido de fondo*
+Este es un SNR más bajo que las señales anteriores, lo que indica que tiene *más ruido de fondo*
 ![image](https://github.com/user-attachments/assets/83f88512-a863-4f19-bb4d-8674d1682d1f)
 
 **gabi.wav** es una señal de voz con una buena relación señal-ruido y clara diferenciación en el espectro de frecuencias. Es adecuada para análisis de voz o procesamiento de señales de audio.
