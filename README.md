@@ -172,10 +172,32 @@ N = len(audio_data_norm)
         plt.xscale("log")
         plt.xlim(20, 10000)
 ```
-Se aplica la Transformada Rápida de Fourier (FFT) con np.fft.fft().
-Se extrae la mitad del espectro ( [:N//2]porque la FFT es simétrica).
-Se grafica el espectro en el dominio de la frecuencia en escala logarítmica.
+- Se aplica la Transformada Rápida de Fourier (FFT) con np.fft.fft().
+- Se extrae la mitad del espectro ( [:N//2]porque la FFT es simétrica).
+- Se grafica el espectro en el dominio de la frecuencia en escala logarítmica.
 
+# Mostrar gráficos:
+  
+```
+plt.tight_layout()
+        plt.show()
+plt.tight_layout()
+
+```
+- Se cargarán los archivos de audio WAV.
+- Se calcula la potencia de cada señal.
+- Se calcula el SNR con referencia al ruido.
+- Se normalizan las señales.
+- Se grafican en el dominio del tiempo y frecuencia.
+- El código permite comparar señales de audio en términos de energía y ruido con una visualización efectiva.
+
+- *SNR gabi = 29.51 dB*
+Este es un *SNR alto*, lo que indica que la señal está limpia y tiene poco ruido de fondo.
+- *SNR martin = 29.84 dB*  
+Muy similar a "gabi.wav", lo que indica una señal limpia y bien separada del ruido de fondo.
+- *SNR Majo = 24.36 dB*  
+Este es un SNR más bajo que las señales anteriores, lo que indica que tiene *más ruido de fondo*
+![image](https://github.com/user-attachments/assets/83f88512-a863-4f19-bb4d-8674d1682d1f)
 
 
 
