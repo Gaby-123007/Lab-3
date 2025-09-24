@@ -352,3 +352,16 @@ ICA es menor, puede haber captado algo de ruido residual.
 - Separación de señales con Beamforming
 
 <img width="963" height="271" alt="image" src="https://github.com/user-attachments/assets/35441944-133f-4a4a-8351-eeec660623b9" />
+
+## Conclusión.
+
+El procesamiento de señales aplicado en el experimento permitió mejorar significativamente la relación señal-ruido (SNR). Inicialmente, el ambiente presentó un SNR de 0 dB, lo que indica que el ruido predominaba completamente sobre la señal. Luego del procesamiento, se observaron mejoras, pues se alcanzaron valores de 29.51 dB para Nicole, 29.84 dB para Gimena y 24.36 dB para Majo. Sin embargo, en la etapa final del procesamiento, la SNR se redujo a 14.26 dB en los tres casos, esto demuestra que, si bien se logró una mejora en la extracción de la señal, aún persisten niveles considerables de ruido. Estos resultados destacan la efectividad de las técnicas empleadas, pero también indican la necesidad de optimizar los algoritmos para mejorar aún más la separación de señales y minimizar la pérdida de calidad en la señal recuperada, reconociendo una posible mayor efectividad para una proxima ejecución de este laboratorio en aumentar la distancia de la ubicación de los micrófonos ya que si los micrófonos están demasiado cerca de una fuente, captarán principalmente su sonido y tendrán dificultades para registrar las demás señales con claridad, lo que puede sesgar el procesamiento. Por el contrario, si los micrófonos están muy alejados o mal distribuidos, pueden captar un exceso de ruido ambiental y reflejos, dificultando la identificación precisa de cada fuente sonora.
+
+
+## Referencias.
+- F. Sáenz, C. Romero, y P. Bernal, «Análisis de señales acústicas para dispositivos de personas con discapacidad, aplicando teoría de procesamiento de radar», 3 de junio de 2016. https://sedici.unlp.edu.ar/handle/10915/53175
+- O. C. L. Germán, «Análisis de la disminución del ruido en el estándar de audio DAB», 1 de febrero de 2021. https://dspace.ups.edu.ec/handle/123456789/19746
+- A. Estrella-T, D. Nicolalde-R, y C. Escobar-T, «Estimación de distancia de detección de cantos de rana en grabaciones automáticas de ecoacústica», Revistapuce, abr. 2018, doi: 10.26807/revpuce.v0i106.134.
+- C. L. Camila, «Comparación de métodos para reducir el ruido en señales emitidas por delfines Tursiops truncatus.», Repositorio de la Universidad Tecnológica de Pereira, 2015. https://repositorio.utp.edu.co/entities/publication/753d0a17-ccf2-435c-9b18-48573bb82435
+- G. Shankar, «Blind Source Separation using ICA - A Practical Guide to Separate Audio Signals», Gowri Shankar, 24 de julio de 2021. https://gowrishankar-info.translate.goog/blog/blind-source-separation-using-ica-a-practical-guide-to-separate-audio-signals/?_x_tr_sl=en&_x_tr_tl=es&_x_tr_hl=es&_x_tr_pto=tc
+
