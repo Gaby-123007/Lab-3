@@ -212,5 +212,6 @@ martin.wav es otra señal de voz con buena calidad y alta relación señal-ruido
 <img width="1280" height="527" alt="image" src="https://github.com/user-attachments/assets/4b756807-325b-48c8-bdbc-3cc314a497cf" />
 Majo.wav también es una señal de voz, pero con más ruido ambiental que las anteriores. Si se desea mejorar la calidad, se podría aplicar un filtro de reducción de ruido.
 
-
-
+<img width="1280" height="528" alt="image" src="https://github.com/user-attachments/assets/583b764e-316d-48b7-9f23-8a92a4157950" />
+"Ambiente.wav" es una señal de ruido de fondo utilizada para calcular el SNR de las otras señales. Su espectro amplio indica que contiene ruido de diversas frecuencias sin un patrón definido. SNR = 0.00 dB
+Como se esperaba, este es el ruido de referencia y por eso su SNR es 0 dB.
