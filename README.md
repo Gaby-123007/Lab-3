@@ -339,7 +339,7 @@ Esta señal es la que se ha guardado en *"voz_sin_ruido.wav"* como el resultado 
 
 - **Señal 3 - "Voz Separada 3**
 
-![image](https://github.com/user-attachments/assets/264252f7-b309-4ac9-b740-66c4da8d914e)
+<img width="1225" height="486" alt="image" src="https://github.com/user-attachments/assets/2f17bb11-7422-4838-a957-eb5722060efc" />
 
 Es otra de las señales separadas por ICA.
 Puede contener *una mezcla de voz y ruido residual* que no fue clasificado como la señal predominante.
@@ -351,3 +351,4 @@ ICA es menor, puede haber captado algo de ruido residual.
 
 - Separación de señales con Beamforming
 
+<img width="963" height="271" alt="image" src="https://github.com/user-attachments/assets/35441944-133f-4a4a-8351-eeec660623b9" />
