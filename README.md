@@ -147,12 +147,12 @@ audio_data_norm = audio_data / np.max(np.abs(audio_data))  # Normalizar
         plt.grid(True, linestyle='--', alpha=0.6)
         plt.xlim(0, tiempo[-1])
 ```
-Normalización : Se divide la señal por su valor máximo para escalar entre -1y 1.
-Eje de tiempo : Se genera con np.arange(len(audio_data_norm)) / sample_rate.
-Se grafica la señal en el dominio del tiempo .
+- Normalización : Se divide la señal por su valor máximo para escalar entre -1y 1.
+- Eje de tiempo : Se genera con np.arange(len(audio_data_norm)) / sample_rate.
+- Se grafica la señal en el dominio del tiempo .
 
-- Transformada de Fourier y gráfica en el dominio de la frecuencia:
-- 
+# Transformada de Fourier y gráfica en el dominio de la frecuencia:
+ 
 ```
 N = len(audio_data_norm)
         fft_data = np.fft.fft(audio_data_norm)
