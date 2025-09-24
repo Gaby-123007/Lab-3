@@ -215,3 +215,139 @@ Majo.wav también es una señal de voz, pero con más ruido ambiental que las an
 <img width="1280" height="528" alt="image" src="https://github.com/user-attachments/assets/583b764e-316d-48b7-9f23-8a92a4157950" />
 "Ambiente.wav" es una señal de ruido de fondo utilizada para calcular el SNR de las otras señales. Su espectro amplio indica que contiene ruido de diversas frecuencias sin un patrón definido. SNR = 0.00 dB
 Como se esperaba, este es el ruido de referencia y por eso su SNR es 0 dB.
+
+**SNR = 0.00 dB**  
+Como se esperaba, este es el *ruido de referencia* y por eso su SNR es 0 dB.
+
+- Definición de una función de filtrado pasa banda:
+  
+```
+def butter_bandpass_filter(data, lowcut, highcut, fs, order=1):
+    nyquist = 0.5 * fs
+    low = lowcut / nyquist
+    high = highcut / nyquist
+    b, a = butter(order, [low, high], btype='band')
+    return lfilter(b, a, data)
+```
+Esta función implementa un filtro pasa banda usando el filtro de Butterworth :
+
+Se define un orden bajo (1) para evitar distorsiones en la señal.
+Se establecieron los límites de frecuencia (lowcut, highcut) en proporción a la frecuencia de Nyquist ( fs/2).
+Se usa la función butter()para calcular los coeficientes del filtro.
+Se aplica el filtro con lfilter()
+Elimina frecuencias fuera del rango especificado, permitiendo solo las frecuencias entre lowcuty highcut.
+
+- Carga del ruido ambiente:
+  
+```
+archivo_ruido = os.path.join(ruta_carpeta, "ambiente.wav")
+potencia_ruido = None
+
+if os.path.exists(archivo_ruido):
+    sample_rate_ruido, audio_ruido = wavfile.read(archivo_ruido)
+    if len(audio_ruido.shape) > 1:
+        audio_ruido = audio_ruido[:, 0]
+    audio_ruido = audio_ruido.astype(np.float32)
+    potencia_ruido = np.mean(audio_ruido ** 2)
+
+```
+Se verifica si existe el archivo ambiente.wav(ruido de fondo).
+Se carga el archivo de ruido y se convierte a mono (si tiene más de un canal).
+Se convierte a float32 para evitar errores de precisión en los cálculos.
+Se calcula la potencia del ruido usando la ecuacion
+
+- Aplicación del Análisis de Componentes Independientes (ICA):
+
+```
+audio_signals, sample_rates = [], []
+for archivo in archivos_ica:
+    archivo_path = os.path.join(ruta_carpeta, archivo)
+    if os.path.exists(archivo_path):
+        sample_rate, audio_data = wavfile.read(archivo_path)
+        if len(audio_data.shape) > 1:
+            audio_data = audio_data[:, 0]
+        audio_data = audio_data.astype(np.float32)
+        audio_data /= np.max(np.abs(audio_data))  # Normalización
+        audio_signals.append(audio_data)
+        sample_rates.append(sample_rate)
+
+```
+Se cargan las señales de archivos_ica.
+Se convierte en mono y se normaliza.
+Se almacenan en audio_signalspara aplicar ICA.
+
+- Separación de señales con ICA:
+
+```
+if len(audio_signals) > 0:
+    min_length = min(map(len, audio_signals))
+    audio_signals = [signal[:min_length] for signal in audio_signals]
+
+    X = np.vstack(audio_signals).T
+    ica = FastICA(n_components=len(archivos_ica), max_iter=2000)
+    S_ica = ica.fit_transform(X)
+
+```
+Se recortan todas las señales al mismo tamaño ( min_length).
+Se utiliza FastICA para separar las señales mezcladas en sus componentes independientes.
+
+- Filtrado de las señales separadas:
+  
+```
+S_ica_filtered = np.array([butter_bandpass_filter(S_ica[:, i], 150, 4000, sample_rates[0]) for i in range(len(archivos_ica))]).T
+
+```
+Se aplica el filtro pasa banda (150-4000 Hz) para eliminar frecuencias fuera del rango de voz.
+
+- Selección de la señal predominante:
+
+```
+energia = [np.sum(np.square(S_ica_filtered[:, i])) for i in range(len(archivos_ica))]
+idx_voz = np.argmax(energia)
+voz_filtrada = S_ica_filtered[:, idx_voz]
+
+```
+Se selecciona la señal con mayor energía.
+
+- Guardado y graficado de la voz filtrada:
+
+```
+voz_wav = (voz_filtrada * 32767).astype(np.int16)
+wavfile.write(os.path.join(ruta_carpeta, "voz_sin_ruido.wav"), sample_rates[0], voz_wav)
+
+```
+Se guarda la señal de voz sin ruido como un nuevo archivo WAV.
+
+- **Señal 1 - "Voz Separada 1**
+  
+<img width="1228" height="483" alt="image" src="https://github.com/user-attachments/assets/32ca9156-7452-4216-8bf5-b945849409db" />
+
+Se observan pausas y momentos de menor actividad, lo que es característico de una conversación con silencios naturales.
+La señal es relativamente fuerte y mantiene una estructura con picos de amplitud bien definidos.
+La amplitud parece más grande que en la *voz filtrada, lo que sugiere que aún tiene componentes adicionales (posiblemente ruido de fondo)
+
+- **Señal 2 - "Voz Separada 2**
+
+<img width="1242" height="481" alt="image" src="https://github.com/user-attachments/assets/237e57cf-4295-4879-900b-5386a4b4425c" />
+
+La forma de la onda es muy similar a la primera señal, pero se observa *una reducción de ruido* y mayor claridad en la estructura de la señal.
+La amplitud ha sido normalizada, manteniendo valores en un rango más estable.
+Se observa un patrón de voz más claro, lo que indica que **esta es la señal predominante tras la separación con ICA** y el filtrado.
+Esta es la *señal final filtrada*, en la que se ha eliminado la mayor cantidad de ruido.
+El filtrado pasa banda (150-4000 Hz) ha permitido *conservar las frecuencias de la voz humana* mientras elimina otros componentes no deseados.
+Esta señal es la que se ha guardado en *"voz_sin_ruido.wav"* como el resultado óptimo
+
+- **Señal 3 - "Voz Separada 3**
+
+![image](https://github.com/user-attachments/assets/264252f7-b309-4ac9-b740-66c4da8d914e)
+
+Es otra de las señales separadas por ICA.
+Puede contener *una mezcla de voz y ruido residual* que no fue clasificado como la señal predominante.
+Se parece mucho a "Voz Separada 1", lo que indica que ambas contienen información de voz con distintos niveles de interferencia.
+
+- **SNR de la señal predominante: 14.26 dB**
+La señal final tiene un SNR menor que las señales originales , lo que sugiere que ICA ha separado la voz principal, pero también ha reducido su energía .
+ICA es menor, puede haber captado algo de ruido residual.
+
+- Separación de señales con Beamforming
+
